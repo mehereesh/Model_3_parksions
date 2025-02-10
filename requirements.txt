@@ -1,0 +1,9 @@
+Flask
+librosa
+numpy
+matplotlib
+scikit-learn
+imbalanced-learn
+pandas
+joblib
+scikit-learn

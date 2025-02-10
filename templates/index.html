@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parkinson's Disease Detection</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Parkinson's Disease Detection</h1>
+        <form id="predict-form" enctype="multipart/form-data">
+            <h2>Upload Audio File:</h2>
+            <input type="file" id="audio" name="audio" accept="audio/*" required>
+            <button type="submit">Predict</button>
+        </form>
+        <h2 id="result"></h2>
+        <h3 id="accuracy"></h3>  <!-- Display accuracy -->
+        <img id="graph" src="" alt="Prediction Confidence Graph" style="display:none; margin-top:20px;">
+    </div>
+    <script>
+        document.getElementById('predict-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const response = await fetch('/predict', {
+                method: 'POST',
+                body: formData,
+            });
+            const data = await response.json();
+            document.getElementById('result').innerText = data.result;
+            document.getElementById('accuracy').innerText = `Prediction Accuracy: ${(data.accuracy * 100).toFixed(2)}%`;  // Show accuracy
+
+            if (data.graph) {
+                const graph = document.getElementById('graph');
+                graph.src = data.graph;
+                graph.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
